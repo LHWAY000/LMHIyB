@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSPD - Présentation FTO | FlashBackFA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0; /* Slate 200 */
+        }
+        .police-blue {
+            background-color: #1e3a8a; /* Blue 900 */
+        }
+        .gold-accent {
+            color: #fbbf24; /* Amber 400 */
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-slate-700 transition-colors duration-200;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-white rounded-full flex items-center justify-center text-slate-900 font-bold border-2 border-yellow-500">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <span class="text-white font-bold text-lg tracking-wider">LSPD <span class="text-yellow-500 text-sm font-normal">FlashBackFA</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#" class="nav-link">Accueil</a>
+                        
+                        <!-- Manuel Rookie Dropdown -->
+                        <div class="relative dropdown group">
+                            <button class="nav-link flex items-center gap-1">
+                                Manuel Rookie <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Casier Judiciaire</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Plainte et Saisie</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Tenue Rookie</a>
+                            </div>
+                        </div>
+
+                        <!-- Manuel LSPD Dropdown -->
+                        <div class="relative dropdown group">
+                            <button class="nav-link flex items-center gap-1">
+                                Manuel LSPD <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Equipement</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Véhicules</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Radio</a>
+                            </div>
+                        </div>
+
+                        <!-- Procédures Dropdown -->
+                        <div class="relative dropdown group">
+                            <button class="nav-link flex items-center gap-1">
+                                Procédures <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Pénale</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Médicale</a>
+                            </div>
+                        </div>
+
+                        <!-- FTO Active -->
+                        <div class="relative dropdown group">
+                            <button class="px-3 py-2 rounded-md text-sm font-bold text-white bg-blue-900 flex items-center gap-1">
+                                FTO - Formations <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
+                                <a href="#" class="block px-4 py-2 text-sm text-white bg-slate-700">Présentation FTO</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Procédure Arrestation</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Droit Miranda</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-slate-800 border-b border-slate-700" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-slate-700">Accueil</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-slate-700">Manuel Rookie</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-slate-700">Manuel LSPD</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-900">FTO - Formations</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-slate-800 h-64 flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <!-- Abstract Background Pattern -->
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+        </div>
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-2">
+                <span class="text-blue-500">FTO</span> DIVISION
+            </h1>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto">Field Training Operations & Specializations</p>
+            <div class="mt-4 w-24 h-1 bg-yellow-500 mx-auto rounded"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        
+        <!-- Intro Card -->
+        <section class="mb-16">
+            <div class="glass-panel rounded-lg p-8 shadow-xl border-l-4 border-blue-600">
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                    <i class="fas fa-chalkboard-teacher text-blue-500"></i> Présentation Générale
+                </h2>
+                <p class="text-gray-300 leading-relaxed mb-4">
+                    La division des opérations de formation sur le terrain est la section chargée des formations internes et des formations aux spécialités. 
+                    Ils sont en contact direct avec les <strong>SLO</strong> pour les formations des rookies.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    Ils s’occupent des formations <strong>PPA</strong> pour les rookies et les officiers du LSPD. Lorsqu’une case est cochée dans le tableau des spécialités, cela signifie que la formation est possible à partir du grade indiqué.
+                </p>
+            </div>
+        </section>
+
+        <!-- Formations Grid -->
+        <h2 class="text-3xl font-bold text-white mb-8 text-center border-b border-slate-700 pb-4">
+            <span class="text-yellow-500">Module</span> de Formation
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- ASD Card -->
+            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
+                <div class="h-3 bg-blue-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-white">🛫 Formation ASD</h3>
+                        <i class="fas fa-helicopter text-3xl text-slate-600"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Air Support Division - Les yeux et les oreilles du LSPD.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-slate-900 p-4 rounded-lg">
+                            <h4 class="text-yellow-500 font-semibold text-sm uppercase tracking-wide mb-2">Prérequis</h4>
+                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
+                                <li>Grade : Officier 2 (minimum)</li>
+                                <li>Savoir piloter un hélicoptère</li>
+                                <li>Ne pas avoir de problème de vertige</li>
+                                <li>Communication radio irréprochable</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-lg">
+                            <h4 class="text-blue-400 font-semibold text-sm uppercase tracking-wide mb-2">Missions Principales</h4>
+                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
+                                <li>Reconnaissance Aérienne</li>
+                                <li>Sécurisation de l'espace aérien</li>
+                                <li>Traque de suspects en fuite</li>
+                                <li>Assistance à Aéronef en danger</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Mike (Moto) Card -->
+            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
+                <div class="h-3 bg-yellow-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-white">🛵 Formation Mike (Moto)</h3>
+                        <i class="fas fa-motorcycle text-3xl text-slate-600"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">BMW FJR1300 - Interception rapide et escorte.</p>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-2 text-sm mb-2">
+                            <div class="bg-slate-900 p-2 rounded text-center">
+                                <span class="block text-gray-500 text-xs">Vitesse Max</span>
+                                <span class="text-white font-mono">250 km/h</span>
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded text-center">
+                                <span class="block text-gray-500 text-xs">0-100 km/h</span>
+                                <span class="text-white font-mono">2.9s</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 p-4 rounded-lg">
+                            <h4 class="text-yellow-500 font-semibold text-sm uppercase tracking-wide mb-2">Attitude Terrain</h4>
+                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
+                                <li>Jamais seul (Min: 2 / Max: 3)</li>
+                                <li>Jamais de fusillade directe en Mary</li>
+                                <li>Renfort 10-56 et Escorte VIP/Convoi</li>
+                                <li><span class="text-red-400">Interdit :</span> Hors-piste (Moto routière)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Dispatcher Card -->
+            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
+                <div class="h-3 bg-green-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-white">📢 Formation Dispatcher</h3>
+                        <i class="fas fa-headset text-3xl text-slate-600"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Coordination des 6 districts de la juridiction.</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-900 p-4 rounded-lg border-l-2 border-green-500">
+                            <h4 class="text-white font-semibold text-sm mb-2">Rôles Clés</h4>
+                            <p class="text-sm text-gray-300">Répartir les effectifs uniformément. Imposer des directives claires.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-green-400 font-semibold text-sm uppercase tracking-wide mb-1">Radio Clean</h4>
+                                <ul class="text-xs text-gray-300 space-y-1">
+                                    <li>• Calls précis et bonne allocution</li>
+                                    <li>• Stopper le flood radio</li>
+                                    <li>• Privilégier le téléphone pour le 1-to-1</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-green-400 font-semibold text-sm uppercase tracking-wide mb-1">Trello Clean</h4>
+                                <ul class="text-xs text-gray-300 space-y-1">
+                                    <li>• Cartes dans la bonne section (10-8, 10-7)</li>
+                                    <li>• Infos à jour (Véhicule, équipiers)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bravo (Boat) Card -->
+            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
+                <div class="h-3 bg-cyan-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-white">🚢 Formation Bravo</h3>
+                        <i class="fas fa-ship text-3xl text-slate-600"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Police Predator - Opérations maritimes et côtières.</p>
+
+                    <div class="space-y-4">
+                         <div class="grid grid-cols-2 gap-2 text-sm mb-2">
+                            <div class="bg-slate-900 p-2 rounded text-center">
+                                <span class="block text-gray-500 text-xs">Puissance</span>
+                                <span class="text-white font-mono">480 CV</span>
+                            </div>
+                            <div class="bg-slate-900 p-2 rounded text-center">
+                                <span class="block text-gray-500 text-xs">Vitesse Max</span>
+                                <span class="text-white font-mono">42 Noeuds</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 p-4 rounded-lg">
+                            <h4 class="text-cyan-500 font-semibold text-sm uppercase tracking-wide mb-2">Attitude Bravo</h4>
+                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
+                                <li>Pilote formés uniquement</li>
+                                <li>Patrouille par 2 minimum</li>
+                                <li>Renfort et Anticipation de fuite</li>
+                                <li><span class="text-yellow-400">Obligatoire :</span> Gilet de sauvetage</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-700 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-white font-bold tracking-wider">LSPD <span class="text-yellow-500 font-normal">FlashBackFA</span></span>
+                <p class="text-gray-500 text-sm mt-1">To Protect and to Serve.</p>
+            </div>
+            <div class="flex space-x-6 text-gray-400">
+                <a href="#" class="hover:text-white transition"><i class="fab fa-discord"></i></a>
+                <a href="#" class="hover:text-white transition"><i class="fas fa-globe"></i></a>
+            </div>
+            <div class="mt-4 md:mt-0 text-gray-600 text-sm">
+                &copy; 2024 LSPD FlashBackFA. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple logic to toggle dropdowns on click for mobile mainly, 
+        // though CSS hover handles desktop.
+        document.querySelectorAll('.dropdown > button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if(window.innerWidth < 768) {
+                    e.preventDefault();
+                    const menu = btn.nextElementSibling;
+                    menu.classList.toggle('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
