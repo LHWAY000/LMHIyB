@@ -1,340 +1,618 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LSPD - Présentation FTO | FlashBackFA</title>
+    <title>Los Santos Police Department | Protect & Serve</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --lspd-blue: #0f172a;
+            --lspd-gold: #fbbf24;
+            --lspd-accent: #1e40af;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* Slate 900 */
-            color: #e2e8f0; /* Slate 200 */
+            background-color: #0f172a;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
-        .police-blue {
-            background-color: #1e3a8a; /* Blue 900 */
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
         }
-        .gold-accent {
-            color: #fbbf24; /* Amber 400 */
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1543039625-14cbd3802e7d?q=80&w=2074&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
-        .nav-link {
-            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-slate-700 transition-colors duration-200;
-        }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+
+        /* Glassmorphism Cards */
         .glass-panel {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--lspd-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .division-card {
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            border-top: 4px solid transparent;
+        }
+
+        .division-card:hover {
+            transform: translateY(-5px);
+            border-top: 4px solid var(--lspd-gold);
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid var(--lspd-gold);
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex flex-col min-h-screen">
 
-    <!-- Navigation -->
-    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-slate-900/95 border-b border-slate-700 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 bg-white rounded-full flex items-center justify-center text-slate-900 font-bold border-2 border-yellow-500">
-                        <i class="fas fa-shield-alt"></i>
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center cursor-pointer" onclick="router('home')">
+                    <div class="flex-shrink-0 text-yellow-400 text-3xl mr-3">
+                        <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <span class="text-white font-bold text-lg tracking-wider">LSPD <span class="text-yellow-500 text-sm font-normal">FlashBackFA</span></span>
+                    <div>
+                        <h1 class="text-2xl text-white tracking-widest font-bold">LSPD</h1>
+                        <span class="text-xs text-slate-400 tracking-wider block -mt-1">Los Santos Police Department</span>
+                    </div>
                 </div>
-
+                
                 <!-- Desktop Menu -->
                 <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#" class="nav-link">Accueil</a>
-                        
-                        <!-- Manuel Rookie Dropdown -->
-                        <div class="relative dropdown group">
-                            <button class="nav-link flex items-center gap-1">
-                                Manuel Rookie <i class="fas fa-chevron-down text-xs"></i>
-                            </button>
-                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Casier Judiciaire</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Plainte et Saisie</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Tenue Rookie</a>
-                            </div>
-                        </div>
-
-                        <!-- Manuel LSPD Dropdown -->
-                        <div class="relative dropdown group">
-                            <button class="nav-link flex items-center gap-1">
-                                Manuel LSPD <i class="fas fa-chevron-down text-xs"></i>
-                            </button>
-                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Equipement</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Véhicules</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Radio</a>
-                            </div>
-                        </div>
-
-                        <!-- Procédures Dropdown -->
-                        <div class="relative dropdown group">
-                            <button class="nav-link flex items-center gap-1">
-                                Procédures <i class="fas fa-chevron-down text-xs"></i>
-                            </button>
-                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Pénale</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Médicale</a>
-                            </div>
-                        </div>
-
-                        <!-- FTO Active -->
-                        <div class="relative dropdown group">
-                            <button class="px-3 py-2 rounded-md text-sm font-bold text-white bg-blue-900 flex items-center gap-1">
-                                FTO - Formations <i class="fas fa-chevron-down text-xs"></i>
-                            </button>
-                            <div class="dropdown-menu absolute hidden bg-slate-800 border border-slate-700 rounded-md shadow-lg w-48 mt-0 z-50">
-                                <a href="#" class="block px-4 py-2 text-sm text-white bg-slate-700">Présentation FTO</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Procédure Arrestation</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white">Droit Miranda</a>
-                            </div>
-                        </div>
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#" onclick="router('home')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium tracking-wide">HOME</a>
+                        <a href="#" onclick="router('divisions')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium tracking-wide">DIVISIONS</a>
+                        <a href="#" onclick="router('recruitment')" class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium tracking-wide">RECRUITMENT</a>
+                        <a href="#" onclick="router('officer-login')" class="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-bold tracking-wide transition-colors border border-blue-600">
+                            <i class="fa-solid fa-lock mr-2"></i>OFFICER PORTAL
+                        </a>
                     </div>
                 </div>
 
-                <!-- Mobile menu button -->
+                <!-- Mobile Menu Button -->
                 <div class="-mr-2 flex md:hidden">
-                    <button type="button" class="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                        <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars"></i>
+                    <button onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Menu -->
-        <div class="hidden md:hidden bg-slate-800 border-b border-slate-700" id="mobile-menu">
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 border-t border-slate-700">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-slate-700">Accueil</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-slate-700">Manuel Rookie</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-slate-700">Manuel LSPD</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-900">FTO - Formations</a>
+                <a href="#" onclick="router('home')" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#" onclick="router('divisions')" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Divisions</a>
+                <a href="#" onclick="router('recruitment')" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recruitment</a>
+                <a href="#" onclick="router('officer-login')" class="text-blue-400 hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium">Officer Portal</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="relative bg-slate-800 h-64 flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 opacity-20">
-            <!-- Abstract Background Pattern -->
-            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
-        </div>
-        <div class="relative z-10 text-center px-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-2">
-                <span class="text-blue-500">FTO</span> DIVISION
-            </h1>
-            <p class="text-lg text-gray-400 max-w-2xl mx-auto">Field Training Operations & Specializations</p>
-            <div class="mt-4 w-24 h-1 bg-yellow-500 mx-auto rounded"></div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        
-        <!-- Intro Card -->
-        <section class="mb-16">
-            <div class="glass-panel rounded-lg p-8 shadow-xl border-l-4 border-blue-600">
-                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                    <i class="fas fa-chalkboard-teacher text-blue-500"></i> Présentation Générale
-                </h2>
-                <p class="text-gray-300 leading-relaxed mb-4">
-                    La division des opérations de formation sur le terrain est la section chargée des formations internes et des formations aux spécialités. 
-                    Ils sont en contact direct avec les <strong>SLO</strong> pour les formations des rookies.
-                </p>
-                <p class="text-gray-300 leading-relaxed">
-                    Ils s’occupent des formations <strong>PPA</strong> pour les rookies et les officiers du LSPD. Lorsqu’une case est cochée dans le tableau des spécialités, cela signifie que la formation est possible à partir du grade indiqué.
-                </p>
-            </div>
-        </section>
-
-        <!-- Formations Grid -->
-        <h2 class="text-3xl font-bold text-white mb-8 text-center border-b border-slate-700 pb-4">
-            <span class="text-yellow-500">Module</span> de Formation
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            <!-- ASD Card -->
-            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
-                <div class="h-3 bg-blue-600"></div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-white">🛫 Formation ASD</h3>
-                        <i class="fas fa-helicopter text-3xl text-slate-600"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Air Support Division - Les yeux et les oreilles du LSPD.</p>
-                    
-                    <div class="space-y-4">
-                        <div class="bg-slate-900 p-4 rounded-lg">
-                            <h4 class="text-yellow-500 font-semibold text-sm uppercase tracking-wide mb-2">Prérequis</h4>
-                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                                <li>Grade : Officier 2 (minimum)</li>
-                                <li>Savoir piloter un hélicoptère</li>
-                                <li>Ne pas avoir de problème de vertige</li>
-                                <li>Communication radio irréprochable</li>
-                            </ul>
-                        </div>
-                        <div class="bg-slate-900 p-4 rounded-lg">
-                            <h4 class="text-blue-400 font-semibold text-sm uppercase tracking-wide mb-2">Missions Principales</h4>
-                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                                <li>Reconnaissance Aérienne</li>
-                                <li>Sécurisation de l'espace aérien</li>
-                                <li>Traque de suspects en fuite</li>
-                                <li>Assistance à Aéronef en danger</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Mike (Moto) Card -->
-            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
-                <div class="h-3 bg-yellow-600"></div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-white">🛵 Formation Mike (Moto)</h3>
-                        <i class="fas fa-motorcycle text-3xl text-slate-600"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">BMW FJR1300 - Interception rapide et escorte.</p>
-
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-2 text-sm mb-2">
-                            <div class="bg-slate-900 p-2 rounded text-center">
-                                <span class="block text-gray-500 text-xs">Vitesse Max</span>
-                                <span class="text-white font-mono">250 km/h</span>
-                            </div>
-                            <div class="bg-slate-900 p-2 rounded text-center">
-                                <span class="block text-gray-500 text-xs">0-100 km/h</span>
-                                <span class="text-white font-mono">2.9s</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-900 p-4 rounded-lg">
-                            <h4 class="text-yellow-500 font-semibold text-sm uppercase tracking-wide mb-2">Attitude Terrain</h4>
-                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                                <li>Jamais seul (Min: 2 / Max: 3)</li>
-                                <li>Jamais de fusillade directe en Mary</li>
-                                <li>Renfort 10-56 et Escorte VIP/Convoi</li>
-                                <li><span class="text-red-400">Interdit :</span> Hors-piste (Moto routière)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Dispatcher Card -->
-            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
-                <div class="h-3 bg-green-600"></div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-white">📢 Formation Dispatcher</h3>
-                        <i class="fas fa-headset text-3xl text-slate-600"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Coordination des 6 districts de la juridiction.</p>
-
-                    <div class="space-y-4">
-                        <div class="bg-slate-900 p-4 rounded-lg border-l-2 border-green-500">
-                            <h4 class="text-white font-semibold text-sm mb-2">Rôles Clés</h4>
-                            <p class="text-sm text-gray-300">Répartir les effectifs uniformément. Imposer des directives claires.</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <h4 class="text-green-400 font-semibold text-sm uppercase tracking-wide mb-1">Radio Clean</h4>
-                                <ul class="text-xs text-gray-300 space-y-1">
-                                    <li>• Calls précis et bonne allocution</li>
-                                    <li>• Stopper le flood radio</li>
-                                    <li>• Privilégier le téléphone pour le 1-to-1</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 class="text-green-400 font-semibold text-sm uppercase tracking-wide mb-1">Trello Clean</h4>
-                                <ul class="text-xs text-gray-300 space-y-1">
-                                    <li>• Cartes dans la bonne section (10-8, 10-7)</li>
-                                    <li>• Infos à jour (Véhicule, équipiers)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Bravo (Boat) Card -->
-            <article class="bg-slate-800 rounded-xl overflow-hidden shadow-lg border border-slate-700 hover:border-blue-500 transition-all duration-300">
-                <div class="h-3 bg-cyan-600"></div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-bold text-white">🚢 Formation Bravo</h3>
-                        <i class="fas fa-ship text-3xl text-slate-600"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Police Predator - Opérations maritimes et côtières.</p>
-
-                    <div class="space-y-4">
-                         <div class="grid grid-cols-2 gap-2 text-sm mb-2">
-                            <div class="bg-slate-900 p-2 rounded text-center">
-                                <span class="block text-gray-500 text-xs">Puissance</span>
-                                <span class="text-white font-mono">480 CV</span>
-                            </div>
-                            <div class="bg-slate-900 p-2 rounded text-center">
-                                <span class="block text-gray-500 text-xs">Vitesse Max</span>
-                                <span class="text-white font-mono">42 Noeuds</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-900 p-4 rounded-lg">
-                            <h4 class="text-cyan-500 font-semibold text-sm uppercase tracking-wide mb-2">Attitude Bravo</h4>
-                            <ul class="list-disc list-inside text-sm text-gray-300 space-y-1">
-                                <li>Pilote formés uniquement</li>
-                                <li>Patrouille par 2 minimum</li>
-                                <li>Renfort et Anticipation de fuite</li>
-                                <li><span class="text-yellow-400">Obligatoire :</span> Gilet de sauvetage</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-        </div>
+    <!-- Main Content Area -->
+    <main id="app" class="flex-grow relative">
+        <!-- Content injected via JS -->
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-700 mt-auto py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
-                <span class="text-white font-bold tracking-wider">LSPD <span class="text-yellow-500 font-normal">FlashBackFA</span></span>
-                <p class="text-gray-500 text-sm mt-1">To Protect and to Serve.</p>
+    <footer class="bg-slate-900 border-t border-slate-800 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-4 text-slate-400">
+                <i class="fa-brands fa-twitter hover:text-blue-400 cursor-pointer text-xl"></i>
+                <i class="fa-brands fa-facebook hover:text-blue-600 cursor-pointer text-xl"></i>
+                <i class="fa-brands fa-instagram hover:text-pink-500 cursor-pointer text-xl"></i>
             </div>
-            <div class="flex space-x-6 text-gray-400">
-                <a href="#" class="hover:text-white transition"><i class="fab fa-discord"></i></a>
-                <a href="#" class="hover:text-white transition"><i class="fas fa-globe"></i></a>
-            </div>
-            <div class="mt-4 md:mt-0 text-gray-600 text-sm">
-                &copy; 2024 LSPD FlashBackFA. All rights reserved.
-            </div>
+            <p class="text-slate-500 text-sm">© 2026 Los Santos Police Department. To Protect and To Serve.</p>
+            <p class="text-slate-600 text-xs mt-2">Not affiliated with Rockstar Games. Roleplay Community Asset.</p>
         </div>
     </footer>
 
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-24 transition-transform duration-300 z-50">
+        <div class="bg-slate-800 border-l-4 border-yellow-500 text-white px-6 py-4 rounded shadow-lg flex items-center">
+            <i class="fa-solid fa-info-circle text-yellow-500 mr-3"></i>
+            <span id="toast-message">Notification text</span>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
     <script>
-        // Simple logic to toggle dropdowns on click for mobile mainly, 
-        // though CSS hover handles desktop.
-        document.querySelectorAll('.dropdown > button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                if(window.innerWidth < 768) {
-                    e.preventDefault();
-                    const menu = btn.nextElementSibling;
-                    menu.classList.toggle('hidden');
+        // State Management
+        const state = {
+            currentPage: 'home',
+            isLoggedIn: false,
+            officerBadge: null
+        };
+
+        // Division Data
+        const divisions = [
+            {
+                id: 'mary',
+                name: 'Mary Unit',
+                subtitle: 'Motorcycle Division',
+                icon: 'fa-motorcycle',
+                color: 'text-blue-400',
+                desc: 'The Mary unit specializes in high-agility traffic enforcement, escort duties, and rapid response in congested areas. Officers must demonstrate superior bike handling skills.',
+                req: 'Rank: Officer II+, Advanced Bike Certification'
+            },
+            {
+                id: 'hsu',
+                name: 'High Speed Unit',
+                subtitle: 'Interceptor Division',
+                icon: 'fa-gauge-high',
+                color: 'text-red-500',
+                desc: 'HSU is deployed for high-risk pursuits involving sports and super vehicles. Utilizing state-of-the-art interceptors to safely neutralize fleeing felons.',
+                req: 'Rank: Corporal+, Pursuit Class A License'
+            },
+            {
+                id: 'eagle',
+                name: 'Eagle',
+                subtitle: 'Air Support Unit',
+                icon: 'fa-helicopter',
+                color: 'text-yellow-400',
+                desc: 'Provides aerial surveillance, tactical support, and rapid transport. The eyes in the sky that ensure no suspect escapes the perimeter.',
+                req: 'Rank: Sergeant+, Flight School Gold Medal'
+            },
+            {
+                id: 'detective',
+                name: 'Detective Bureau',
+                subtitle: 'Investigative Services',
+                icon: 'fa-magnifying-glass',
+                color: 'text-gray-300',
+                desc: 'Tasked with solving major crimes, organized crime dismantling, and forensic investigation. Patience, intellect, and discretion are paramount.',
+                req: 'Rank: Senior Officer+, Clean Disciplinary Record'
+            }
+        ];
+
+        // Core Functions
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const border = toast.querySelector('div');
+            
+            msgEl.textContent = message;
+            
+            // Reset classes
+            border.className = `bg-slate-800 border-l-4 text-white px-6 py-4 rounded shadow-lg flex items-center`;
+            
+            if (type === 'success') border.classList.add('border-green-500');
+            else if (type === 'error') border.classList.add('border-red-500');
+            else border.classList.add('border-yellow-500');
+
+            toast.classList.remove('translate-y-24');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24');
+            }, 3000);
+        }
+
+        function router(page) {
+            state.currentPage = page;
+            const app = document.getElementById('app');
+            window.scrollTo(0, 0);
+            
+            // Close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
+
+            switch(page) {
+                case 'home':
+                    renderHome(app);
+                    break;
+                case 'divisions':
+                    renderDivisions(app);
+                    break;
+                case 'recruitment':
+                    renderRecruitment(app);
+                    break;
+                case 'officer-login':
+                    if(state.isLoggedIn) router('officer-dashboard');
+                    else renderOfficerLogin(app);
+                    break;
+                case 'officer-dashboard':
+                    if(!state.isLoggedIn) router('officer-login');
+                    else renderOfficerDashboard(app);
+                    break;
+                default:
+                    renderHome(app);
+            }
+        }
+
+        // Render Functions
+        function renderHome(container) {
+            container.innerHTML = `
+                <div class="hero-bg min-h-screen flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+                    <div class="relative z-10 text-center px-4 fade-in">
+                        <i class="fa-solid fa-shield-halved text-6xl md:text-8xl text-yellow-500 mb-6 drop-shadow-lg"></i>
+                        <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-wider drop-shadow-xl">Obey & Survive</h1>
+                        <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto font-light">Join the Los Santos Police Department today. Dedication, Honor, and Integrity.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button onclick="router('recruitment')" class="bg-blue-700 hover:bg-blue-600 text-white text-lg px-8 py-3 rounded font-bold uppercase tracking-wider transition transform hover:scale-105">
+                                Apply Now
+                            </button>
+                            <button onclick="router('divisions')" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-3 rounded font-bold uppercase tracking-wider transition transform hover:scale-105">
+                                Our Divisions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDivisions(container) {
+            let cardsHtml = divisions.map(div => `
+                <div class="glass-panel p-8 rounded-lg division-card relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid ${div.icon} text-9xl"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-6 border border-slate-600">
+                            <i class="fa-solid ${div.icon} text-2xl ${div.color}"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-1">${div.name}</h3>
+                        <p class="text-blue-400 font-semibold text-sm mb-4 uppercase tracking-widest">${div.subtitle}</p>
+                        <p class="text-gray-300 leading-relaxed mb-6">${div.desc}</p>
+                        <div class="border-t border-slate-700 pt-4">
+                            <p class="text-xs text-slate-500 uppercase font-bold">Requirements</p>
+                            <p class="text-sm text-slate-400">${div.req}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="bg-slate-900 min-h-screen py-20 px-4">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="text-center mb-16 fade-in">
+                            <h2 class="text-4xl text-white font-bold mb-4">Specialized Divisions</h2>
+                            <div class="h-1 w-24 bg-yellow-500 mx-auto"></div>
+                            <p class="text-slate-400 mt-4 max-w-2xl mx-auto">The LSPD offers various career paths for officers looking to specialize in specific fields of law enforcement.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderRecruitment(container) {
+            container.innerHTML = `
+                <div class="bg-slate-900 min-h-screen py-20 px-4">
+                    <div class="max-w-3xl mx-auto glass-panel p-8 md:p-12 rounded-xl fade-in">
+                        <div class="text-center mb-10">
+                            <i class="fa-solid fa-file-contract text-5xl text-blue-500 mb-4"></i>
+                            <h2 class="text-3xl text-white font-bold">Civilian Application</h2>
+                            <p class="text-slate-400 mt-2">Begin your career with the Los Santos Police Department.</p>
+                        </div>
+
+                        <form onsubmit="handleCivilianSubmit(event)" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Full Name</label>
+                                    <input type="text" required class="w-full bg-slate-800 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" placeholder="John Doe">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Date of Birth</label>
+                                    <input type="date" required class="w-full bg-slate-800 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Phone Number</label>
+                                <input type="tel" required class="w-full bg-slate-800 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500" placeholder="555-0123">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Why do you want to join LSPD?</label>
+                                <textarea required rows="4" class="w-full bg-slate-800 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500" placeholder="Explain your motivations..."></textarea>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="checkbox" required id="terms" class="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500">
+                                <label for="terms" class="ml-2 text-sm text-slate-400">I declare that I have a clean criminal record.</label>
+                            </div>
+
+                            <button type="submit" class="w-full bg-blue-700 hover:bg-blue-600 text-white font-bold py-4 rounded transition-colors flex justify-center items-center group">
+                                <span class="group-hover:mr-2 transition-all">SUBMIT APPLICATION</span>
+                                <i class="fa-solid fa-arrow-right opacity-0 group-hover:opacity-100 transition-all"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOfficerLogin(container) {
+            container.innerHTML = `
+                <div class="bg-slate-900 min-h-screen flex items-center justify-center px-4">
+                    <div class="w-full max-w-md glass-panel p-10 rounded-xl fade-in border-t-4 border-t-blue-600">
+                        <div class="text-center mb-8">
+                            <i class="fa-solid fa-user-shield text-5xl text-slate-200 mb-4"></i>
+                            <h2 class="text-2xl text-white font-bold">MDT Login</h2>
+                            <p class="text-slate-400 text-sm mt-1">Authorized Personnel Only</p>
+                        </div>
+
+                        <form onsubmit="handleLoginSubmit(event)" class="space-y-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Badge Number</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-3 text-slate-500"><i class="fa-solid fa-id-badge"></i></span>
+                                    <input type="text" id="badgeInput" required class="w-full bg-slate-800 border border-slate-600 rounded px-4 py-3 pl-10 text-white focus:outline-none focus:border-blue-500 tracking-widest font-mono" placeholder="LSPD-000">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Password</label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-3 text-slate-500"><i class="fa-solid fa-key"></i></span>
+                                    <input type="password" required class="w-full bg-slate-800 border border-slate-600 rounded px-4 py-3 pl-10 text-white focus:outline-none focus:border-blue-500" value="password">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-blue-800 hover:bg-blue-700 text-white font-bold py-3 rounded transition-colors">
+                                ACCESS TERMINAL
+                            </button>
+                        </form>
+                        
+                        <div class="mt-6 text-center">
+                             <p class="text-xs text-slate-600">Unauthorized access is a felony under PC 1505.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOfficerDashboard(container) {
+            container.innerHTML = `
+                <div class="bg-slate-900 min-h-screen pb-20">
+                    <!-- Dashboard Header -->
+                    <div class="bg-slate-800 border-b border-slate-700 py-6 px-4 mb-8">
+                        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                            <div class="flex items-center mb-4 md:mb-0">
+                                <div class="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mr-4 border border-blue-500">
+                                    <i class="fa-solid fa-user-police text-blue-200"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl text-white font-bold">Officer Dashboard</h2>
+                                    <p class="text-blue-400 text-sm font-mono">BADGE: ${state.officerBadge} | STATUS: ACTIVE</p>
+                                </div>
+                            </div>
+                            <button onclick="handleLogout()" class="text-red-400 hover:text-red-300 text-sm font-bold flex items-center">
+                                <i class="fa-solid fa-sign-out-alt mr-2"></i> LOGOUT
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8 fade-in">
+                        
+                        <!-- Profile Card -->
+                        <div class="glass-panel p-6 rounded-lg h-fit">
+                            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2">Personnel File</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Rank</span>
+                                    <span class="text-white font-mono">Officer II</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Department</span>
+                                    <span class="text-white font-mono">Mission Row PD</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Hours on Duty</span>
+                                    <span class="text-white font-mono">42.5 hrs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Division Application Form -->
+                        <div class="lg:col-span-2 glass-panel p-8 rounded-lg border border-blue-900/50">
+                            <div class="flex items-center mb-6">
+                                <i class="fa-solid fa-folder-open text-3xl text-yellow-500 mr-4"></i>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">Internal Transfer Request</h3>
+                                    <p class="text-slate-400 text-sm">Apply for specialized divisions.</p>
+                                </div>
+                            </div>
+
+                            <form onsubmit="handleInternalSubmit(event)" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-300 mb-2">Target Division</label>
+                                        <select id="divisionSelect" class="w-full bg-slate-900 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500">
+                                            <option value="mary">Mary Unit (Motor)</option>
+                                            <option value="hsu">High Speed Unit (HSU)</option>
+                                            <option value="eagle">Eagle (Air Support)</option>
+                                            <option value="detective">Detective Bureau</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-300 mb-2">Current Supervisor</label>
+                                        <input type="text" required class="w-full bg-slate-900 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500" placeholder="Sgt. Name">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Qualifications & Certifications</label>
+                                    <textarea required rows="3" class="w-full bg-slate-900 border border-slate-600 rounded px-4 py-3 text-white focus:outline-none focus:border-blue-500" placeholder="List your driving tier, shooting score, or flight hours..."></textarea>
+                                </div>
+
+                                <div class="bg-blue-900/20 p-4 rounded border border-blue-900/50">
+                                    <p class="text-xs text-blue-300 mb-2"><i class="fa-solid fa-circle-info mr-1"></i> <strong>Division Requirements:</strong></p>
+                                    <p id="reqText" class="text-xs text-slate-400 italic">Select a division to see requirements.</p>
+                                </div>
+
+                                <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded transition-colors w-full md:w-auto">
+                                    SUBMIT TRANSFER REQUEST
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add listener for select change to update text
+            setTimeout(() => {
+                const select = document.getElementById('divisionSelect');
+                const reqText = document.getElementById('reqText');
+                
+                const updateReq = () => {
+                    const div = divisions.find(d => d.id === select.value);
+                    reqText.innerText = div ? div.req : '';
+                };
+                
+                select.addEventListener('change', updateReq);
+                updateReq(); // Initial run
+            }, 100);
+        }
+
+        // Logic Handlers
+        function handleCivilianSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            
+            // Loading state
+            btn.innerHTML = '<div class="loader"></div>';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                showToast('Application Submitted Successfully!', 'success');
+                e.target.reset();
+                window.scrollTo(0, 0);
+            }, 1500);
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const badge = document.getElementById('badgeInput').value;
+            
+            // Simulating API call
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = '<div class="loader mx-auto"></div>';
+
+            setTimeout(() => {
+                if(badge.length > 0) {
+                    state.isLoggedIn = true;
+                    state.officerBadge = badge;
+                    showToast(`Welcome back, Officer ${badge}`, 'success');
+                    router('officer-dashboard');
+                } else {
+                    btn.innerHTML = 'ACCESS TERMINAL';
+                    showToast('Invalid Badge Number', 'error');
                 }
-            });
+            }, 1000);
+        }
+
+        function handleLogout() {
+            state.isLoggedIn = false;
+            state.officerBadge = null;
+            showToast('Logged out securely.', 'info');
+            router('home');
+        }
+
+        function handleInternalSubmit(e) {
+            e.preventDefault();
+            const division = document.getElementById('divisionSelect');
+            const divisionName = division.options[division.selectedIndex].text;
+            
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<div class="loader mx-auto border-white border-t-yellow-500"></div>';
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                showToast(`Application to ${divisionName} forwarded to Command.`, 'success');
+                e.target.reset();
+            }, 1500);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            router('home');
         });
+
     </script>
 </body>
 </html>
